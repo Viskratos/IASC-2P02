@@ -123,9 +123,9 @@ const animation = () =>
     torusKnot.position.y = Math.sin(elapsedTime * uiObject.speed) * uiObject.distance
 
     // Rotate TorusKnot
-    torusKnot.rotation.x = Math.sin(elapsedTime * uiObject.rotation)
-    torusKnot.rotation.y = Math.sin(elapsedTime * uiObject.rotation)
-    torusKnot.rotation.z = Math.sin(elapsedTime * uiObject.rotation)
+    torusKnot.rotation.x = elapsedTime * uiObject.rotation
+    torusKnot.rotation.y = elapsedTime * uiObject.rotation
+    torusKnot.rotation.z = elapsedTime * uiObject.rotation
 
     // Update OrbitControls
     controls.update()
