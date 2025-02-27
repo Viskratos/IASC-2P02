@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <title>Assignment 1</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- three.js importmap-->
+    <script type="importmap">
+        {
+            "imports": {
+              "three": "https://ga.jspm.io/npm:three@0.172.0/build/three.module.js",
+              "OrbitControls": "https://ga.jspm.io/npm:three@0.172.0/examples/jsm/controls/OrbitControls.js",
+              "lil-gui": "https://ga.jspm.io/npm:lil-gui@0.20.0/dist/lil-gui.esm.js"
+            }
+        }
+    </script>
+
+    <!-- three.js scene -->
+    <script src="script.js" type="module"></script>
+
+</head>
+<body>
+    <div class="flexbox">
+        <!-- ESSAY -->
+        <div class="essay">
+         <h2>1. Flatness</h2>
+         <p><span class="clickable" id="part-one">From inside the cave...</span></p>
+        
+         <p>We were told stories and myths about what the outside was like; we folk never cared for it until one day, unlike any other, "it" had appeared... This black mass settled in the center of our barren walls. We understood not what it was, nor did we know if "it" was even alive until. This thing had this sort of aura radiating off of it; I couldn’t understand what I was looking at. I had so many questions and so few answers; even the Elders knew nothing; all we understood was to keep our distance. After days of the first appearance, the “Thing” started to move; <span class="clickable" id="first-change">it had seemed to start compressing into itself, almost flattening and spreading back out as if it was pulsating, almost breathing? Or at least trying to.</span> Little did we know this thing... creature? Whatever it was had more "life" to it than just its compressions. In mere moments this "thing" had started <span class="clickable" id="second-change">moving up and down;</span> maybe it meant something, maybe it was telling us something. Whatever it was, we had never seen anything like this. We were afraid.
+
+         <p>These stories had been passed down generation after generation, telling us to fear the outside world and to never, EVER, leave this cave. The appearance of this "thing" had only solidified these stories and beliefs. Making us not only fear this "thing" but believe it to be one of the evils of the outside. Generations before, we were told that the people of the inside and the people of the outside were one until the war of the Seraphim had happened, splitting up our two groups and dividing up the people. The stories told that the war of the Seraphim happened because the beings from above weren’t happy with us and hated seeing what we had become so they had us run away. It was never told what the Seraphim looked like, for if we had seen madness would have occurred, for these beings were above what we were able to perceive; many have lost their minds, especially our heroes, and many other innocent lives were lost too. Although these hardships we continue to prosper and live down here only because the heroes of our past had brought down below what we call "the Holy Light," which brought warmth and light in what would be a considered a realm of cold darkness. Our people had evolved forwards in certain ways and backwards in others. We had adapted to the darkness and the cool environment, but in a sense our education had changed, and our understanding of life as it is and reality itself had changed vastly compared to what our first generation of people knew and understood. Would our first people’s generation know what this “thing” was?</p>
+
+         <h2>2. Seeing Double</h2>
+         <p><span class="clickable" id="part-two">From outside the cave...</span></p>
+
+         <p>We are the Solarii people, and the evil people who stole what would have been the new artificially made sun are the Seraphen people. Long ago we were one originally known as the Luminari people, and we had been the most advanced species within our known galaxy, but our main issue was that our Sun was dying, and we didn’t have long till all was for naught. Our extremely advanced society had overcome space, space travel, and even help increase our lifespans tenfold, but the way our people end is because a mere star is about to die? Outrageous, we had to do something and quick. The society had gathered the greatest minds and smartest engineers and scientists to develop what we called “the Holy Light.” This light would have been a substitute for the sun's core and basically reversed its lifespan and essentially brought it back to life. But one day when we had finished “the Light,” the Seraphen people had attacked and brought these creatures called the Seraphim, creatures of obscure shape and color that when merely seen by the naked eye caused a sort of madness in others. This creature looked to have no beginning nor end to it, and its parts seemed to float in space, not touching. We had only recently understood what these creatures looked like because after the Seraphen went into the world below, the creatures had seemed to almost go into a sleep state. But as a precaution, our people had developed a dome around both the Seraphim, which have continued to guard the gate to the Seraphen people, and the entrance to the underworld. Generations and generations have passed, and we have yet to be able to solve how the people of the past created “the Light,” but we were able to create a sort of lesser form of it, which does keep our star alive but won’t keep it living forever. One day, out of nowhere, the terrible beast(s) had awoken; <span class="clickable" id="third-change">they started floating and beginning to rotate</span> almost as if booting up once again. What had caused this we didn’t know; what we did know was that nothing good came from this… Days had gone past, and the creature(s) were making a move once again; they had <span class="clickable" id="fourth-change">started to move left and right,</span> circling both the dome and the entrance. </p>
+
+         <p>Fear is and was the only emotion we felt adn were able to feel when the creature(s) we once feared are alive once again we didn’t know if we had the capabilities to even stop these creatures or why they had suddenly been brought back to life but we need that we had to stick and fight. What if the Seraphen people have had enough of the underworld and want to take over the surface would we have been able to stop them? Is there even a point? We fear their guardians, for they are powerful. We still know not where they came from or how the Seraphen came to know and tame them; what we know for sure is that we won’t go down easily, and that deep down if there were any other possible way to fix this we'd rather take the latter.</p>
+        </div>
+
+        <!-- SCENE -->
+        <div class="scene">
+            <canvas class="webgl"></canvas>
+        </div>
+    </div>
+</body>
