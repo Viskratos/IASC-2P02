@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <title>Dataviz 1</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- three.js importmap-->
+    <script type="importmap">
+        {
+            "imports": {
+              "three": "https://ga.jspm.io/npm:three@0.172.0/build/three.module.js",
+              "OrbitControls": "https://ga.jspm.io/npm:three@0.172.0/examples/jsm/controls/OrbitControls.js",
+              "lil-gui": "https://ga.jspm.io/npm:lil-gui@0.20.0/dist/lil-gui.esm.js"
+            }
+        }
+    </script>
+
+    <!-- three.js scene -->
+    <script src="script.js" type="module"></script>
+
+</head>
+<body>
+    <h1>Dataviz 1</h1>
+    <h2>
+        <span style = "color: rgba(128, 0, 128, 0.579);">Jinwoo</span> 
+        <span style = "color: black;">Army</span>
+        <span style = "color: rgba(255, 0, 0, 0.478);">Igris</span>
+        <span style = "color: rgba(0, 0, 255, 0.519);">Beru</span>
+    </h2>
+    <canvas class="webgl"></canvas>
+</body>
