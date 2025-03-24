@@ -76,36 +76,70 @@ scene.add(directionalLight)
 // Cube Geometry 
 const cubeGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5)
 
+const flickeringCubes = []
+
 const drawCube = (height, params) => 
 {
-    // Create cube material
-    const cubeMaterial = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(params.color)
-    })
+    let geometry;
+    // Checks if we need to draw a cube or a torus knot
+    if(params.term === 'lightning')
+    {
+        geometry = new THREE.TorusKnotGeometry(0.5, 0.1, 8, 20, 1, 20); // Adjust size if needed
+    } else {
+        geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5); // Keep cubes for other terms
+    }
 
-    // Create cube
-    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+    // Create cube material
+    let material
+    if(params.emmissive)
+    {
+        material = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(params.color),
+            emissive: new THREE.Color(params.color),
+            emissiveIntensity: 100 // Initial intensity
+        })
+            
+        flickeringCubes.push(material) // Store material for flickering effect
+    } 
+
+    else
+    {
+        material = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(params.color)
+        })
+    }
+
+    // Create mesh based on the geometry
+    const mesh = new THREE.Mesh(geometry, material)
 
     // Position cube
-    cube.position.x = (Math.random() - 0.5) * params.diameter
-    cube.position.z = (Math.random() - 0.5) * params.diameter
-    cube.position.y = height - 10
+    mesh.position.x = (Math.random() - 0.5) * params.diameter
+    mesh.position.z = (Math.random() - 0.5) * params.diameter
+    mesh.position.y = height - 10
 
     // Scale cube
-    cube.scale.x = params.scale
-    cube.scale.y = params.scale
-    cube.scale.z = params.scale
+    mesh.scale.x = params.scale
+    mesh.scale.y = params.scale
+    mesh.scale.z = params.scale
+
+    // Dynamic scale
+    if(params.dynamicScale)
+    {
+        mesh.scale.x = height * 0.05
+        mesh.scale.y = height * 0.05
+        mesh.scale.z = height * 0.05
+    }
 
     // Randomize cube rotation
     if(params.randomized)
     {
-        cube.rotation.x = Math.random() * 2 * Math.PI
-        cube.rotation.z = Math.random() * 2 * Math.PI
-        cube.rotation.y = Math.random() * 2 * Math.PI
+        mesh.rotation.x = Math.random() * 2 * Math.PI
+        mesh.rotation.z = Math.random() * 2 * Math.PI
+        mesh.rotation.y = Math.random() * 2 * Math.PI
     }
     
     // Add cube to group
-    params.group.add(cube)
+    params.group.add(mesh)
 }
 
 
@@ -126,36 +160,43 @@ const group3 = new THREE.Group()
 scene.add(group3)
 
 const uiObj = {
-    sourceText: "The quick brown fox jumped over the lazy dog.",
+    sourceText: "",
     saveSourceText() {
         saveSourceText()
     },
     term1:
     {
-        term: 'fox',
-        color: '#aa00ff',
-        group: group1,
+        term: 'quest',
+        color: '#2B65EC',
         diameter: 10,
+        dynamicScale: true,
+        emmissive: false,
+        group: group1,
         nCubes: 100,
         randomized: true,
         scale: 1
     },
     term2:
     {
-        term: 'dog',
-        color: '#00ffaa',
-        group: group2,
+        term: 'lightning',
+        color: '#FFFF33',
         diameter: 10,
-        nCubes: 100,
+        dynamicScale: false,
+        emmissive: true,
+        group: group2,
+        nCubes: 50,
         randomized: true,
-        scale: 1
+        scale: 0.5,
+        emissiveIntensity: 100,
     },
     term3:
     {
         term: '',
         color: '',
-        group: group3,
         diameter: 10,
+        dynamicScale: false,
+        emmissive: false,
+        group: group3,
         nCubes: 100,
         randomized: true,
         scale: 1
@@ -314,6 +355,11 @@ const animation = () =>
         camera.position.y = 10
         camera.lookAt(0, 0, 0)
     }
+
+    // Flickering effect for lightning cubes
+    flickeringCubes.forEach(material => {
+        material.emissiveIntensity = 0.5 + Math.random() * 4  // Flickers between 0.5 and 4
+    })
 
     // Renderer
     renderer.render(scene, camera)
