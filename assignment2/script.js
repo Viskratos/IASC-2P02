@@ -73,20 +73,19 @@ scene.add(directionalLight)
 /***********
 ** MESHES **
 ************/
-// Cube Geometry 
-const cubeGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5)
 
 const flickeringCubes = []
 
 const drawCube = (height, params) => 
 {
     let geometry;
-    // Checks if we need to draw a cube or a torus knot
-    if(params.term === 'lightning')
-    {
-        geometry = new THREE.TorusKnotGeometry(0.5, 0.1, 8, 20, 1, 20); // Adjust size if needed
+    // Checks if we need to draw a cube, ring, or a torus knot
+    if (params.term === 'lightning') {
+        geometry = new THREE.TorusKnotGeometry(0.5, 0.1, 8, 20, 1, 20); // Lightning remains a torus knot
+    } else if (params.term === 'quest') {
+        geometry = new THREE.TorusGeometry(0.4, 0.15, 16, 100); // Rings for Term 1
     } else {
-        geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5); // Keep cubes for other terms
+        geometry = new THREE.SphereGeometry(0.25, 16, 16); // Replaced BoxGeometry with SphereGeometry
     }
 
     // Create cube material
@@ -95,8 +94,10 @@ const drawCube = (height, params) =>
     {
         material = new THREE.MeshStandardMaterial({
             color: new THREE.Color(params.color),
-            emissive: new THREE.Color(params.color),
-            emissiveIntensity: 100 // Initial intensity
+            emissive: new THREE.Color(params.color), //Apply emissive volor
+            emissiveIntensity: 100, // Increase intensity for more glow
+            transparent: true, // Makes the material partially transparent for ethereal look
+            opacity: 0.8 // Slight opacity
         })
             
         flickeringCubes.push(material) // Store material for flickering effect
@@ -137,6 +138,9 @@ const drawCube = (height, params) =>
         mesh.rotation.z = Math.random() * 2 * Math.PI
         mesh.rotation.y = Math.random() * 2 * Math.PI
     }
+
+    // Rotate the torus to make it horizontal (lying flat along the XZ plane)
+    mesh.rotation.x = Math.PI / 2; // Rotate by 90 degrees on the X-axis to make it horizontal
     
     // Add cube to group
     params.group.add(mesh)
@@ -167,14 +171,14 @@ const uiObj = {
     term1:
     {
         term: 'quest',
-        color: '#2B65EC',
-        diameter: 10,
+        color: '#D72638',
+        diameter: 5,
         dynamicScale: true,
         emmissive: false,
         group: group1,
-        nCubes: 100,
-        randomized: true,
-        scale: 1
+        nCubes: 50,
+        randomized: false,
+        scale: 100
     },
     term2:
     {
@@ -191,13 +195,13 @@ const uiObj = {
     },
     term3:
     {
-        term: '',
-        color: '',
+        term: 'hero',
+        color: '#2B65EC',
         diameter: 10,
         dynamicScale: false,
         emmissive: false,
         group: group3,
-        nCubes: 100,
+        nCubes: 50,
         randomized: true,
         scale: 1
     },
@@ -358,7 +362,7 @@ const animation = () =>
 
     // Flickering effect for lightning cubes
     flickeringCubes.forEach(material => {
-        material.emissiveIntensity = 0.5 + Math.random() * 4  // Flickers between 0.5 and 4
+        material.emissiveIntensity = 0.5 + Math.random() * 1  // Flickers between 0.5 and 1
     })
 
     // Renderer
