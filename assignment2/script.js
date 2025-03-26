@@ -79,73 +79,96 @@ const flickeringCubes = []
 const drawCube = (height, params) => 
 {
     let geometry;
+    let material;
+        
     // Checks if we need to draw a cube, ring, or a torus knot
     if (params.term === 'lightning') {
         geometry = new THREE.TorusKnotGeometry(0.5, 0.1, 8, 20, 1, 20); // Lightning remains a torus knot
+        // Torus Knot: Apply emissive with flickering effect
+        material = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(params.color),
+            emissive: new THREE.Color(params.color),
+            emissiveIntensity: 0.5, // Initial emissive intensity
+            transparent: true,      // Enable transparency
+            opacity: 0.8,           // Slight opacity
+            metalness: 0.8,
+            roughness: 0.2
+        });
+
+        flickeringCubes.push(material); // Store material for flickering effect
+
     } else if (params.term === 'quest') {
-        geometry = new THREE.TorusGeometry(0.4, 0.15, 16, 100); // Rings for Term 1
+        geometry = new THREE.TorusGeometry(1, 0.2, 32, 100); // Increased size of Torus
+        // Torus: Apply constant emissive glow without flickering
+        material = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(params.color),
+            emissive: new THREE.Color(params.color), // Constant glow
+            emissiveIntensity: 0.1, // Subtle constant emissive intensity
+            transparent: true,
+            opacity: 0.5,            // Adjust opacity for transparency
+            metalness: 0.8,
+            roughness: 0.2
+        });
+
     } else {
         geometry = new THREE.SphereGeometry(0.25, 16, 16); // Replaced BoxGeometry with SphereGeometry
     }
-
-    // Create cube material
-    let material
-    if(params.emmissive)
-    {
+        
+    // If emissive is required for other shapes, use this block
+    if (params.emmissive && params.term !== 'quest') {
         material = new THREE.MeshStandardMaterial({
             color: new THREE.Color(params.color),
-            emissive: new THREE.Color(params.color), //Apply emissive volor
-            emissiveIntensity: 100, // Increase intensity for more glow
-            transparent: true, // Makes the material partially transparent for ethereal look
-            opacity: 0.8 // Slight opacity
+            emissive: new THREE.Color(params.color),
+            emissiveIntensity: 100, // High intensity for full glow
+            transparent: true,      // Slight transparency
+            opacity: 0.8
         })
-            
-        flickeringCubes.push(material) // Store material for flickering effect
-    } 
-
-    else
-    {
+        
+        flickeringCubes.push(material); // Store material for flickering effect (remove if not needed)
+    }
+        
+    else if (!material) {
         material = new THREE.MeshStandardMaterial({
             color: new THREE.Color(params.color)
-        })
+        });
     }
-
+        
     // Create mesh based on the geometry
     const mesh = new THREE.Mesh(geometry, material)
-
+        
     // Position cube
     mesh.position.x = (Math.random() - 0.5) * params.diameter
     mesh.position.z = (Math.random() - 0.5) * params.diameter
     mesh.position.y = height - 10
-
+        
     // Scale cube
     mesh.scale.x = params.scale
     mesh.scale.y = params.scale
     mesh.scale.z = params.scale
-
+        
     // Dynamic scale
-    if(params.dynamicScale)
-    {
+    if (params.dynamicScale) {
         mesh.scale.x = height * 0.05
         mesh.scale.y = height * 0.05
         mesh.scale.z = height * 0.05
     }
-
+        
     // Randomize cube rotation
-    if(params.randomized)
-    {
+    if (params.randomized) {
         mesh.rotation.x = Math.random() * 2 * Math.PI
         mesh.rotation.z = Math.random() * 2 * Math.PI
         mesh.rotation.y = Math.random() * 2 * Math.PI
     }
-
+        
     // Rotate the torus to make it horizontal (lying flat along the XZ plane)
     mesh.rotation.x = Math.PI / 2; // Rotate by 90 degrees on the X-axis to make it horizontal
-    
+        
     // Add cube to group
     params.group.add(mesh)
+        
+    // Store mesh to add wave movement later
+    return mesh;
 }
-
 
 /*******
 ** UI **
@@ -171,12 +194,12 @@ const uiObj = {
     term1:
     {
         term: 'quest',
-        color: '#D72638',
+        color: '#228B22',
         diameter: 5,
         dynamicScale: true,
-        emmissive: false,
+        emmissive: true,
         group: group1,
-        nCubes: 50,
+        nCubes: 1,
         randomized: false,
         scale: 100
     },
@@ -350,6 +373,12 @@ const animation = () =>
 
     // Update OrbitControls
     controls.update()
+
+    // Group 3 wave
+    group3.position.y = Math.sin(elapsedTime * 0.5)
+
+    // Group 1 spin
+    group1.rotation.y = elapsedTime * 0.75
 
     // Rotate Camera
     if(uiObj.rotateCamera)
